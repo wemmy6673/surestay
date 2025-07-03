@@ -15,14 +15,14 @@ export default function Signup({ onLogin }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
+      <div className="fixed inset-0 flex items-center justify-center bg-white z-50">
         <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-[#0E0EAE] border-solid"></div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen flex flex-col justify-start items-center bg-white p-6 px-2 sm:px-4 mt-4">
+    <div className="min-h-screen flex flex-col justify-start items-center bg-white p-6 px-2 sm:px-4">
       <div className="fixed left-1/2 top-8 transform -translate-x-1/2 z-50 w-full max-w-md px-4 sm:px-0">
         <div className="w-full p-3 bg-white">
           <div className="max-w-md w-full p-3">

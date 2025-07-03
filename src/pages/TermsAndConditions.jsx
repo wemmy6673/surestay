@@ -16,9 +16,9 @@ export default function TermsAndConditions({ onAgree }) {
   }
 
   return (
-    <div className="min-h-screen flex flex-col justify-start items-center bg-white p-6 px-6 sm:px-6 mt-4">
+    <div className="min-h-screen flex flex-col justify-start items-center bg-white p-6 px-6 sm:px-6 mt-0">
       <div className="fixed left-1/2 top-8 transform -translate-x-1/2 z-50 w-full max-w-lg px-4 sm:px-8">
-        <div className="w-full text-left p-4 sm:p-6 mb-6 bg-white">
+        <div className="w-full text-left px-4 sm:px-6 mb-6 bg-white">
           <div className="flex justify-center mb-0">
             <img src={previewLogo} alt="Logo" className="w-40 h-40 object-contain" />
           </div>
