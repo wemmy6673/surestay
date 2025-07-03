@@ -14,7 +14,7 @@ export default function Login({ onSignup }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
+      <div className="fixed inset-0 flex items-center justify-center bg-white z-50">
         <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-[#0E0EAE] border-solid"></div>
       </div>
     )

@@ -21,14 +21,8 @@ function App() {
 
   if (showSplash) {
     return (
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100vh',
-        background: '#fff',
-      }}>
-        <img src={previewLogo} alt="Logo" style={{ width: 200, height: 200 }} />
+      <div className="fixed inset-0 flex items-center justify-center bg-white z-50">
+        <img src={previewLogo} alt="Logo" className="w-52 h-52 object-contain" />
       </div>
     )
   }
