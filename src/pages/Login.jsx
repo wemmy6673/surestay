@@ -1,16 +1,30 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import previewLogo from '../images/Preview.png'
 import { FiEye, FiEyeOff } from 'react-icons/fi'
 
 export default function Login({ onSignup }) {
   const [showPassword, setShowPassword] = useState(false)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1000)
+    return () => clearTimeout(timer)
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-[#0E0EAE] border-solid"></div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen flex flex-col justify-start items-center bg-white p-6 px-6 sm:px-6 mt-4">
       <div className="fixed left-1/2 top-8 transform -translate-x-1/2 z-50 w-full max-w-md px-4 sm:px-8">
         <div className="w-full p-6 bg-white">
-          <div className="flex justify-center mb-4">
+          <div className="flex justify-center mb-0">
             <img src={previewLogo} alt="SureStay logo" className="w-36 h-36 object-contain" />
           </div>
           <Formik
