@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import previewLogo from '../images/Preview.png'
 import { FiEye, FiEyeOff } from 'react-icons/fi'
+import { login } from '../api'
 
-export default function Login({ onSignup }) {
+export default function Login({ onSignup, onLoginSuccess }) {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1000)
@@ -43,12 +45,18 @@ export default function Login({ onSignup }) {
               }
               return errors
             }}
-            onSubmit={(values, { setSubmitting }) => {
-              setTimeout(() => {
-                // Replace with real login logic
-                alert(JSON.stringify(values, null, 2))
-                setSubmitting(false)
-              }, 400)
+            onSubmit={async (values, { setSubmitting }) => {
+              setError('');
+              setLoading(true);
+              try {
+                const data = await login(values);
+                localStorage.setItem('token', data.token);
+                onLoginSuccess?.(data.user);
+              } catch (err) {
+                setError(err.message);
+              }
+              setLoading(false);
+              setSubmitting(false);
             }}
           >
             {({ isSubmitting }) => (
@@ -83,6 +91,7 @@ export default function Login({ onSignup }) {
                   </div>
                   <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1 text-left ml-1" />
                 </div>
+                {error && <div className="text-red-500 text-center mb-2">{error}</div>}
                 <button
                   type="submit"
                   disabled={isSubmitting}

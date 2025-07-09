@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import previewLogo from '../images/Preview.png'
 import { FiEye, FiEyeOff } from 'react-icons/fi'
+import { signup } from '../api'
 
-export default function Signup({ onLogin }) {
+export default function Signup({ onLogin, onOtp }) {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1000)
@@ -53,12 +55,17 @@ export default function Signup({ onLogin }) {
                 }
                 return errors
               }}
-              onSubmit={(values, { setSubmitting }) => {
-                setTimeout(() => {
-                  // Replace with real signup logic
-                  alert(JSON.stringify(values, null, 2))
-                  setSubmitting(false)
-                }, 400)
+              onSubmit={async (values, { setSubmitting }) => {
+                setError('');
+                setLoading(true);
+                try {
+                  await signup({ fullname: values.fullname, email: values.email, password: values.password });
+                  onOtp?.(values.email);
+                } catch (err) {
+                  setError(err.message);
+                }
+                setLoading(false);
+                setSubmitting(false);
               }}
             >
               {({ isSubmitting }) => (
@@ -123,6 +130,7 @@ export default function Signup({ onLogin }) {
                     </div>
                     <ErrorMessage name="confirmPassword" component="div" className="text-red-500 text-sm mt-1 text-left ml-1" />
                   </div>
+                  {error && <div className="text-red-500 text-center mb-2">{error}</div>}
                   <button
                     type="submit"
                     disabled={isSubmitting}

@@ -1,63 +1,46 @@
 import { useState, useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { BrowserRouter as Router, Routes, Route, useNavigate, Navigate } from 'react-router-dom'
 import previewLogo from './images/Preview.png'
 import TermsAndConditions from './pages/TermsAndConditions'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
+import ChooseRole from './pages/ChooseRole'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
-  const [showSplash, setShowSplash] = useState(true)
-  const [showTerms, setShowTerms] = useState(true)
-  const [showLogin, setShowLogin] = useState(false)
-  const [showSignup, setShowSignup] = useState(false)
-
+function SplashScreen() {
   useEffect(() => {
-    const timer = setTimeout(() => setShowSplash(false), 2000)
+    const timer = setTimeout(() => {
+      window.location.replace('/terms');
+    }, 2000)
     return () => clearTimeout(timer)
   }, [])
-
-  if (showSplash) {
-    return (
-      <div className="fixed inset-0 flex items-center justify-center bg-white z-50">
-        <img src={previewLogo} alt="Logo" className="w-52 h-52 object-contain" />
-      </div>
-    )
-  }
-
-  if (showTerms) {
-    return <TermsAndConditions onAgree={() => { setShowTerms(false); setShowLogin(true); }} />
-  }
-
-  if (showLogin) {
-    return <Login onSignup={() => { setShowLogin(false); setShowSignup(true); }} />
-  }
-
-  if (showSignup) {
-    return <Signup onLogin={() => { setShowSignup(false); setShowLogin(true); }} />
-  }
-
   return (
-    <>
-      <div className="flex flex-col items-center mt-8">
-        <img src={previewLogo} className="w-24 h-24 mb-4" alt="SureStay logo" />
-        <h1 className="text-3xl font-bold mb-2">SureStay</h1>
-      </div>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Welcome to SureStay!
-      </p>
-    </>
+    <div className="fixed inset-0 flex items-center justify-center bg-white z-50">
+      <img src={previewLogo} alt="Logo" className="w-52 h-52 object-contain" />
+    </div>
   )
 }
 
-export default App
+function AppRoutes() {
+  const [role, setRole] = useState(null)
+  const navigate = useNavigate()
+
+  return (
+    <Routes>
+      <Route path="/" element={<Navigate to="/splash" replace />} />
+      <Route path="/splash" element={<SplashScreen />} />
+      <Route path="/terms" element={<TermsAndConditions onAgree={() => navigate('/choose-role')} />} />
+      <Route path="/choose-role" element={<ChooseRole onSelectRole={selectedRole => { setRole(selectedRole); navigate('/login'); }} />} />
+      <Route path="/login" element={<Login onSignup={() => navigate('/signup')} onLoginSuccess={() => {}} />} />
+      <Route path="/signup" element={<Signup onLogin={() => navigate('/login')} onOtp={() => {}} />} />
+    </Routes>
+  )
+}
+
+export default function App() {
+  return (
+    <Router>
+      <AppRoutes />
+    </Router>
+  )
+}
