@@ -3,7 +3,8 @@ import manImg from '../images/Man.png';
 
 export default function ChooseRole({ onSelectRole }) {
   return (
-  <div className="flex items-center justify-center py-60 md:p-72">
+  <div className='flex items-center justify-center fixed w-full min-h-screen white'>
+  <div className="flex items-center justify-center">
   <div className="w-full max-w-md lg:max-w-2xl mx-auto p-6 bg-white rounded-lg shadow flex flex-col items-center">
     <h2 className="text-2xl font-bold text-center mb-2">Welcome to SureStay</h2>
     <p className="text-center text-gray-600 mb-8">Please choose your role to continue</p>
@@ -19,6 +20,6 @@ export default function ChooseRole({ onSelectRole }) {
     </div>
   </div>
 </div>
-
+</div>
   );
 } 
