@@ -30,9 +30,9 @@ function AppRoutes() {
       <Route path="/" element={<Navigate to="/splash" replace />} />
       <Route path="/splash" element={<SplashScreen />} />
       <Route path="/terms" element={<TermsAndConditions onAgree={() => navigate('/choose-role')} />} />
-      <Route path="/choose-role" element={<ChooseRole onSelectRole={selectedRole => { setRole(selectedRole); navigate('/login'); }} />} />
-      <Route path="/login" element={<Login onSignup={() => navigate('/signup')} onLoginSuccess={() => {}} />} />
-      <Route path="/signup" element={<Signup onLogin={() => navigate('/login')} onOtp={() => {}} />} />
+      <Route path="/choose-role" element={<ChooseRole onSelectRole={selectedRole => { setRole(selectedRole); navigate('/signup', { state: { role: selectedRole } }); }} />} />
+      <Route path="/login" element={<Login onSignup={() => navigate('/signup', { state: { role } })} onLoginSuccess={() => {}} />} />
+      <Route path="/signup" element={<Signup onLogin={() => navigate('/login')} onOtp={() => {}} role={(window.history.state && window.history.state.usr && window.history.state.usr.role) || role} />} />
     </Routes>
   )
 }

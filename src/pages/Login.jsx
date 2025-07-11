@@ -24,7 +24,7 @@ export default function Login({ onSignup, onLoginSuccess }) {
 
   return (
     <div className="min-h-screen flex flex-col justify-start items-center bg-white p-6 px-6 sm:px-6 mt-1">
-      <div className="fixed left-1/2 top-8 transform -translate-x-1/2 z-50 w-full max-w-md px-4 sm:px-8">
+      <div className="fixed left-1/2 top-8 transform -translate-x-1/2 z-50 w-full max-w-md lg:max-w-xl px-4 sm:px-8">
         <div className="w-full p-6 bg-white">
           <div className="flex justify-center mb-0">
             <img src={previewLogo} alt="SureStay logo" className="w-36 h-36 object-contain" />
@@ -67,7 +67,7 @@ export default function Login({ onSignup, onLoginSuccess }) {
                     type="email"
                     name="email"
                     id="email"
-                    className="w-full px-3 py-2 sm:py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2"
+                    className="w-full lg:max-w-lg px-3 py-2 sm:py-4 lg:px-8 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2 lg:text-lg"
                   />
                   <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1 text-left ml-1" />
                 </div>
@@ -78,7 +78,7 @@ export default function Login({ onSignup, onLoginSuccess }) {
                       type={showPassword ? 'text' : 'password'}
                       name="password"
                       id="password"
-                      className="w-full px-3 py-2 sm:py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2 pr-10"
+                      className="w-full lg:max-w-lg px-3 py-2 sm:py-4 lg:px-8 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2 pr-10 lg:text-lg"
                     />
                     <button
                       type="button"
