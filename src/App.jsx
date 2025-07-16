@@ -5,6 +5,8 @@ import TermsAndConditions from './pages/TermsAndConditions'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import ChooseRole from './pages/ChooseRole'
+import LandlordDashboard from './pages/LandlordDashboard'
+import TenantDashboard from './pages/TenantDashboard'
 import './App.css'
 
 function SplashScreen() {
@@ -25,14 +27,31 @@ function AppRoutes() {
   const [role, setRole] = useState(null)
   const navigate = useNavigate()
 
+  const handleLoginSuccess = (user) => {
+    // For now, use the stored role to determine dashboard
+    if (role === 'landlord') {
+      navigate('/landlord-dashboard');
+    } else if (role === 'tenant') {
+      navigate('/tenant-dashboard');
+    }
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setRole(null);
+    navigate('/login');
+  }
+
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/splash" replace />} />
       <Route path="/splash" element={<SplashScreen />} />
       <Route path="/terms" element={<TermsAndConditions onAgree={() => navigate('/choose-role')} />} />
-      <Route path="/choose-role" element={<ChooseRole onSelectRole={selectedRole => { setRole(selectedRole); navigate('/signup', { state: { role: selectedRole } }); }} />} />
-      <Route path="/login" element={<Login onSignup={() => navigate('/signup', { state: { role } })} onLoginSuccess={() => {}} />} />
-      <Route path="/signup" element={<Signup onLogin={() => navigate('/login')} onOtp={() => {}} role={(window.history.state && window.history.state.usr && window.history.state.usr.role) || role} />} />
+      <Route path="/choose-role" element={<ChooseRole onSelectRole={selectedRole => { setRole(selectedRole); navigate('/login'); }} />} />
+      <Route path="/login" element={<Login onSignup={() => navigate('/signup', { state: { role } })} onLoginSuccess={handleLoginSuccess} />} />
+      <Route path="/signup" element={<Signup onLogin={() => navigate('/login')} onOtp={() => {}} role={role} />} />
+      <Route path="/landlord-dashboard" element={<LandlordDashboard onLogout={handleLogout} />} />
+      <Route path="/tenant-dashboard" element={<TenantDashboard onLogout={handleLogout} />} />
     </Routes>
   )
 }
