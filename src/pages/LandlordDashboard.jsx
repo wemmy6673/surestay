@@ -2,11 +2,20 @@ import { useState } from 'react'
 import previewLogo from '../images/Preview.png'
 import { FiHome, FiUsers, FiDollarSign, FiSettings, FiLogOut } from 'react-icons/fi'
 import { BsEye, BsTextRight, BsXLg } from "react-icons/bs";
+import { Uploader } from "uploader"; // Installed by "react-uploader".
+import { UploadButton } from "react-uploader";
+import { UploadDropzone } from "react-uploader";
+
 
 export default function LandlordDashboard({ onLogout }) {
   const [activeTab, setActiveTab] = useState('overview')
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [properties, setProperties] = useState([])
+
+  const uploader = Uploader({
+      apiKey: "free" // Get production API keys from Bytescale
+  });
+  const options = { multi: true };
 
   return (
     <div className="min-h-screen bg-white flex relative">
@@ -233,20 +242,16 @@ export default function LandlordDashboard({ onLogout }) {
             <div className="bg-white shadow overflow-hidden sm:rounded-md">
               <ul className="divide-y divide-gray-200">
                 <li className="px-6 py-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="text-lg font-medium text-gray-900">John Doe</h3>
-                      <p className="text-sm text-gray-500">March 2024 Rent</p>
-                    </div>
-                    <div className="flex items-center space-x-4">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                        Paid
-                      </span>
-                      <span className="text-sm font-medium text-gray-900">₦500,000</span>
-                    </div>
-                  </div>
+                   <UploadDropzone uploader={uploader}
+                  options={options}
+                  onUpdate={files => alert(files.map(x => x.fileUrl).join("\n"))}
+                  width="600px"
+                  height="375px" />
+                  
                 </li>
               </ul>
+
+               
             </div>
           )}
 
