@@ -1,23 +1,34 @@
 import { useState } from 'react'
 import previewLogo from '../images/Preview.png'
 import { FiHome, FiUsers, FiDollarSign, FiSettings, FiLogOut } from 'react-icons/fi'
-import { BsEye } from "react-icons/bs";
+import { BsEye, BsTextRight, BsXLg } from "react-icons/bs";
 
 export default function LandlordDashboard({ onLogout }) {
   const [activeTab, setActiveTab] = useState('overview')
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [properties, setProperties] = useState([])
 
   return (
-    <div className="min-h-screen bg-white flex">
-      {/* Sidebar */}
-      <div className="w-[20%] bg-[#0E0EAE] text-white">
-        <div className="p-6">
-          <div className="flex items-center mb-8">
-            <img src={previewLogo} alt="SureStay logo" className="w-8 h-8 mr-3" />
-            <h1 className="text-lg font-semibold">Landlord</h1>
+    <div className="min-h-screen bg-white flex relative">
+      {/* Sidebar (Mobile + Desktop) */}
+      <div
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#0E0EAE] text-white transform ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        } transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:flex`}
+      >
+        <div className="p-6 w-full">
+          <div className="flex items-center justify-between mb-8">
+            <h1 className="text-lg font-semibold">SureStay</h1>
+            <button
+              className="md:hidden"
+              onClick={() => setSidebarOpen(false)}
+            >
+              <BsXLg className="h-5 w-5 text-white" />
+            </button>
           </div>
           <nav className="space-y-2">
             <button
-              onClick={() => setActiveTab('overview')}
+              onClick={() => { setActiveTab('overview'); setSidebarOpen(false); }}
               className={`w-full flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
                 activeTab === 'overview'
                   ? 'bg-white/20 text-white'
@@ -28,7 +39,7 @@ export default function LandlordDashboard({ onLogout }) {
               Overview
             </button>
             <button
-              onClick={() => setActiveTab('properties')}
+              onClick={() => { setActiveTab('properties'); setSidebarOpen(false); }}
               className={`w-full flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
                 activeTab === 'properties'
                   ? 'bg-white/20 text-white'
@@ -36,10 +47,10 @@ export default function LandlordDashboard({ onLogout }) {
               }`}
             >
               <FiHome className="mr-3 h-5 w-5" />
-              Properties
+              Listings
             </button>
             <button
-              onClick={() => setActiveTab('tenants')}
+              onClick={() => { setActiveTab('tenants'); setSidebarOpen(false); }}
               className={`w-full flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
                 activeTab === 'tenants'
                   ? 'bg-white/20 text-white'
@@ -50,7 +61,7 @@ export default function LandlordDashboard({ onLogout }) {
               Tenants
             </button>
             <button
-              onClick={() => setActiveTab('payments')}
+              onClick={() => { setActiveTab('ListProperties'); setSidebarOpen(false); }}
               className={`w-full flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
                 activeTab === 'payments'
                   ? 'bg-white/20 text-white'
@@ -58,10 +69,10 @@ export default function LandlordDashboard({ onLogout }) {
               }`}
             >
               <FiDollarSign className="mr-3 h-5 w-5" />
-              Payments
+              List Properties
             </button>
             <button
-              onClick={() => setActiveTab('settings')}
+              onClick={() => { setActiveTab('settings'); setSidebarOpen(false); }}
               className={`w-full flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
                 activeTab === 'settings'
                   ? 'bg-white/20 text-white'
@@ -84,19 +95,31 @@ export default function LandlordDashboard({ onLogout }) {
         </div>
       </div>
 
+      {/* Backdrop for mobile sidebar */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Main Content */}
-      <div className="flex-1 w-[80%]">
+      <div className="flex-1 w-full md:w-[80%]">
         {/* Header */}
-        <header className="bg-white shadow-sm border-b">
-          <div className="px-6 py-4 md:py-8">
-            <h2 className="text-xl font-semibold text-gray-900">
-              {activeTab === 'overview' && 'Dashboard'}
-              {activeTab === 'properties' && 'My Properties'}
-              {activeTab === 'tenants' && 'Tenant Management'}
-              {activeTab === 'payments' && 'Payment History'}
-              {activeTab === 'settings' && 'Account Settings'}
-            </h2>
-          </div>
+        <header className="bg-white shadow-sm border-b flex items-center justify-between px-6 py-4 md:py-8">
+          <button
+            className="md:hidden p-2 text-gray-600"
+            onClick={() => setSidebarOpen(true)}
+          >
+            <BsTextRight className="h-6 w-6" />
+          </button>
+          <h2 className="text-xl font-semibold text-gray-900">
+            {activeTab === 'overview' && 'Dashboard'}
+            {activeTab === 'properties' && 'My Properties'}
+            {activeTab === 'tenants' && 'Tenant Management'}
+            {activeTab === 'ListProperties' && 'List Properties'}
+            {activeTab === 'settings' && 'Account Settings'}
+          </h2>
         </header>
 
         {/* Main Content */}
@@ -105,47 +128,29 @@ export default function LandlordDashboard({ onLogout }) {
             <div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <div className="bg-white overflow-hidden shadow rounded-lg">
-                  <div className="p-5">
-                    <div className="flex items-center">
-                      <div className="flex-shrink-0">
-                        <FiHome className="h-6 w-6 text-gray-400" />
-                      </div>
-                      <div className="ml-5 w-0 flex-1">
-                        <dl>
-                          <dt className="text-sm font-medium text-gray-500 truncate">Total Properties</dt>
-                          <dd className="text-lg font-medium text-gray-900">12</dd>
-                        </dl>
-                      </div>
+                  <div className="p-5 flex items-center">
+                    <FiHome className="h-6 w-6 text-gray-400" />
+                    <div className="ml-5">
+                      <dt className="text-sm font-medium text-gray-500">Total Properties</dt>
+                      <dd className="text-lg font-medium text-gray-900">12</dd>
                     </div>
                   </div>
                 </div>
                 <div className="bg-white overflow-hidden shadow rounded-lg">
-                  <div className="p-5">
-                    <div className="flex items-center">
-                      <div className="flex-shrink-0">
-                        <FiUsers className="h-6 w-6 text-gray-400" />
-                      </div>
-                      <div className="ml-5 w-0 flex-1">
-                        <dl>
-                          <dt className="text-sm font-medium text-gray-500 truncate">Active Tenants</dt>
-                          <dd className="text-lg font-medium text-gray-900">8</dd>
-                        </dl>
-                      </div>
+                  <div className="p-5 flex items-center">
+                    <FiUsers className="h-6 w-6 text-gray-400" />
+                    <div className="ml-5">
+                      <dt className="text-sm font-medium text-gray-500">Active Tenants</dt>
+                      <dd className="text-lg font-medium text-gray-900">8</dd>
                     </div>
                   </div>
                 </div>
                 <div className="bg-white overflow-hidden shadow rounded-lg">
-                  <div className="p-5">
-                    <div className="flex items-center">
-                      <div className="flex-shrink-0">
-                        <FiDollarSign className="h-6 w-6 text-gray-400" />
-                      </div>
-                      <div className="ml-5 w-0 flex-1">
-                        <dl>
-                          <dt className="text-sm font-medium text-gray-500 truncate">Monthly Revenue</dt>
-                          <dd className="text-lg font-medium text-gray-900">₦2.4M</dd>
-                        </dl>
-                      </div>
+                  <div className="p-5 flex items-center">
+                    <FiDollarSign className="h-6 w-6 text-gray-400" />
+                    <div className="ml-5">
+                      <dt className="text-sm font-medium text-gray-500">Monthly Revenue</dt>
+                      <dd className="text-lg font-medium text-gray-900">₦2.4M</dd>
                     </div>
                   </div>
                 </div>
@@ -177,122 +182,104 @@ export default function LandlordDashboard({ onLogout }) {
           )}
 
           {activeTab === 'properties' && (
-            <div>
-              <div className="bg-white shadow overflow-hidden sm:rounded-md">
+            <div className="bg-white shadow overflow-hidden sm:rounded-md">
+              {properties.length === 0 ? (
+                <div className="px-6 py-12 text-center text-gray-500 text-lg">No properties Listed</div>
+              ) : (
                 <ul className="divide-y divide-gray-200">
-                  <li className="px-6 py-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="text-lg font-medium text-gray-900">3 Bedroom Apartment</h3>
-                        <p className="text-sm text-gray-500">Lekki, Lagos</p>
+                  {properties.map((property, idx) => (
+                    <li className="px-6 py-4" key={idx}>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="text-lg font-medium text-gray-900">{property.name}</h3>
+                          <p className="text-sm text-gray-500">{property.location}</p>
+                        </div>
+                        <div className="flex items-center space-x-4">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            {property.status}
+                          </span>
+                          <span className="text-sm font-medium text-gray-900">{property.price}</span>
+                        </div>
                       </div>
-                      <div className="flex items-center space-x-4">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                          Occupied
-                        </span>
-                        <span className="text-sm font-medium text-gray-900">₦500,000/month</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li className="px-6 py-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="text-lg font-medium text-gray-900">2 Bedroom Flat</h3>
-                        <p className="text-sm text-gray-500">Victoria Island, Lagos</p>
-                      </div>
-                      <div className="flex items-center space-x-4">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                          Available
-                        </span>
-                        <span className="text-sm font-medium text-gray-900">₦350,000/month</span>
-                      </div>
-                    </div>
-                  </li>
+                    </li>
+                  ))}
                 </ul>
-              </div>
+              )}
             </div>
           )}
 
           {activeTab === 'tenants' && (
-            <div>
-              <div className="bg-white shadow overflow-hidden sm:rounded-md">
-                <ul className="divide-y divide-gray-200">
-                  <li className="px-6 py-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="text-lg font-medium text-gray-900">John Doe</h3>
-                        <p className="text-sm text-gray-500">3 Bedroom Apartment - Lekki</p>
-                      </div>
-                      <div className="flex items-center space-x-4">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                          Active
-                        </span>
-                        <span className="text-sm text-gray-500">Due: 15th March</span>
-                      </div>
+            <div className="bg-white shadow overflow-hidden sm:rounded-md">
+              <ul className="divide-y divide-gray-200">
+                <li className="px-6 py-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-lg font-medium text-gray-900">John Doe</h3>
+                      <p className="text-sm text-gray-500">3 Bedroom Apartment - Lekki</p>
                     </div>
-                  </li>
-                </ul>
-              </div>
+                    <div className="flex items-center space-x-4">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        Active
+                      </span>
+                      <span className="text-sm text-gray-500">Due: 15th March</span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
             </div>
           )}
 
-          {activeTab === 'payments' && (
-            <div>
-              <div className="bg-white shadow overflow-hidden sm:rounded-md">
-                <ul className="divide-y divide-gray-200">
-                  <li className="px-6 py-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="text-lg font-medium text-gray-900">John Doe</h3>
-                        <p className="text-sm text-gray-500">March 2024 Rent</p>
-                      </div>
-                      <div className="flex items-center space-x-4">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                          Paid
-                        </span>
-                        <span className="text-sm font-medium text-gray-900">₦500,000</span>
-                      </div>
+          {activeTab === 'ListProperties' && (
+            <div className="bg-white shadow overflow-hidden sm:rounded-md">
+              <ul className="divide-y divide-gray-200">
+                <li className="px-6 py-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-lg font-medium text-gray-900">John Doe</h3>
+                      <p className="text-sm text-gray-500">March 2024 Rent</p>
                     </div>
-                  </li>
-                </ul>
-              </div>
+                    <div className="flex items-center space-x-4">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        Paid
+                      </span>
+                      <span className="text-sm font-medium text-gray-900">₦500,000</span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
             </div>
           )}
 
           {activeTab === 'settings' && (
-            <div>
-              <div className="bg-white shadow rounded-lg p-6">
-                <div className="space-y-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Full Name</label>
-                    <input
-                      type="text"
-                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#0E0EAE] focus:border-[#0E0EAE] sm:text-sm"
-                      defaultValue="Landlord Name"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Email</label>
-                    <input
-                      type="email"
-                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#0E0EAE] focus:border-[#0E0EAE] sm:text-sm"
-                      defaultValue="landlord@example.com"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Phone Number</label>
-                    <input
-                      type="tel"
-                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#0E0EAE] focus:border-[#0E0EAE] sm:text-sm"
-                      defaultValue="+234 801 234 5678"
-                    />
-                  </div>
-                  <div className="pt-4">
-                    <button className="bg-[#0E0EAE] text-white px-4 py-2 rounded-md hover:bg-[#0E0EAE]/90">
-                      Save Changes
-                    </button>
-                  </div>
-                </div>
+            <div className="bg-white shadow rounded-lg p-6 space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Full Name</label>
+                <input
+                  type="text"
+                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#0E0EAE] focus:border-[#0E0EAE] sm:text-sm"
+                  defaultValue="Landlord Name"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Email</label>
+                <input
+                  type="email"
+                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#0E0EAE] focus:border-[#0E0EAE] sm:text-sm"
+                  defaultValue="landlord@example.com"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Phone Number</label>
+                <input
+                  type="tel"
+                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-[#0E0EAE] focus:border-[#0E0EAE] sm:text-sm"
+                  defaultValue="+234 801 234 5678"
+                />
+              </div>
+              <div className="pt-4">
+                <button className="bg-[#0E0EAE] text-white px-4 py-2 rounded-md hover:bg-[#0E0EAE]/90">
+                  Save Changes
+                </button>
               </div>
             </div>
           )}
@@ -300,4 +287,4 @@ export default function LandlordDashboard({ onLogout }) {
       </div>
     </div>
   )
-} 
+}
