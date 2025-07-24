@@ -11,17 +11,24 @@ export default function LandlordDashboard({ onLogout }) {
   const [activeTab, setActiveTab] = useState('overview')
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [properties, setProperties] = useState([])
+  const [uploadedUrls, setUploadedUrls] = useState([]);
+
 
   const uploader = Uploader({
       apiKey: "free" // Get production API keys from Bytescale
   });
   const options = { multi: true };
 
+  const handleUpload = (files) => {
+    const urls = files.map(file => file.fileUrl);
+    setUploadedUrls(urls);
+  };
+
   return (
     <div className="min-h-screen bg-white flex relative">
       {/* Sidebar (Mobile + Desktop) */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#0E0EAE] text-white transform ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 md:w-[20%] bg-[#0E0EAE] text-white transform ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         } transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:flex`}
       >
@@ -240,16 +247,31 @@ export default function LandlordDashboard({ onLogout }) {
 
           {activeTab === 'ListProperties' && (
             <div className="bg-white shadow overflow-hidden sm:rounded-md">
-              <ul className="divide-y divide-gray-200">
-                <li className="px-6 py-4">
-                   <UploadDropzone uploader={uploader}
-                  options={options}
-                  onUpdate={files => alert(files.map(x => x.fileUrl).join("\n"))}
-                  width="600px"
-                  height="375px" />
-                  
-                </li>
-              </ul>
+               <div className="flex flex-col items-center p-4">
+                  <UploadDropzone
+                    uploader={uploader}
+                    options={options}
+                    onUpdate={handleUpload}
+                    width="600px"
+                    height="375px"
+                  />
+
+                  {uploadedUrls.length > 0 && (
+                    <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+                      {uploadedUrls.map((url, index) => (
+                        <div key={index} className="w-32 h-32 overflow-hidden rounded shadow">
+                          <img
+                            src={url}
+                            alt={`Uploaded ${index + 1}`}
+                            className="w-full h-full object-cover"
+                          /> 
+                        </div>
+                      ))}
+                    </div>
+                  )}
+               </div>
+
+              
 
                
             </div>
