@@ -12,6 +12,8 @@ export default function LandlordDashboard({ onLogout }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [properties, setProperties] = useState([])
   const [uploadedUrls, setUploadedUrls] = useState([]);
+  const [houseType, setHouseType] = useState("");
+  const [customDescription, setCustomDescription] = useState("");
 
 
   const uploader = Uploader({
@@ -246,36 +248,126 @@ export default function LandlordDashboard({ onLogout }) {
           )}
 
           {activeTab === 'ListProperties' && (
-            <div className="bg-white shadow overflow-hidden sm:rounded-md">
-               <div className="flex flex-col items-center p-4">
-                  <UploadDropzone
-                    uploader={uploader}
-                    options={options}
-                    onUpdate={handleUpload}
-                    width="600px"
-                    height="375px"
-                  />
+  <form className="max-w-3xl mx-auto p-6 items-center justify-center">
+    <h2 className="text-xl font-semibold mb-4">List a New Property</h2>
 
-                  {uploadedUrls.length > 0 && (
-                    <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-                      {uploadedUrls.map((url, index) => (
-                        <div key={index} className="w-32 h-32 overflow-hidden rounded shadow">
-                          <img
-                            src={url}
-                            alt={`Uploaded ${index + 1}`}
-                            className="w-full h-full object-cover"
-                          /> 
-                        </div>
-                      ))}
-                    </div>
-                  )}
-               </div>
+    {/* House Type Selection */}
+    <div className="mb-6">
+      <label className="block text-sm font-medium text-gray-700 mb-2">
+        Select Type of Apartment
+      </label>
+      <select
+        className="w-full border border-gray-300 bg-white rounded-md p-4 focus:ring-[#0E0EAE] focus:border-[#0E0EAE]"
+        value={houseType}
+        onChange={(e) => setHouseType(e.target.value)}
+        required
+      >
+        <option value="">-- Select --</option>
+        <option value="Single-room">Single-room</option>
+        <option value="Self-contain">Self-contain</option>
+        <option value="One-bedroom apartment">One-bedroom apartment</option>
+        <option value="Two-bedroom apartment">Two-bedroom apartment</option>
+        <option value="Others">Others</option>
+      </select>
+    </div>
 
-              
+    {/* Custom Description if "Others" is selected */}
+    {houseType === "Others" && (
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Describe the Apartment
+        </label>
+        <input
+          type="text"
+          value={customDescription}
+          onChange={(e) => setCustomDescription(e.target.value)}
+          placeholder="Enter apartment description..."
+          className="w-full border border-gray-300 rounded-md p-4 focus:ring-[#0E0EAE] focus:border-[#0E0EAE]"
+          required
+        />
+      </div>
+    )}
 
-               
+    {/* State Selection */}
+    <div className="mb-6">
+      <label className="block text-sm font-medium text-gray-700 mb-2">
+        Select State
+      </label>
+      <select
+        className="w-full border border-gray-300 bg-white rounded-md p-4 focus:ring-[#0E0EAE] focus:border-[#0E0EAE]"
+        
+        onChange={(e) => setSelectedState(e.target.value)}
+        required
+      >
+        <option value="">-- Select State --</option>
+        {[
+          "Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno",
+          "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Gombe", "Imo", "Jigawa",
+          "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger",
+          "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara",
+          "FCT - Abuja"
+        ].map((state) => (
+          <option key={state} value={state}>{state}</option>
+        ))}
+      </select>
+    </div>
+
+    {/* Address Field */}
+    <div className="mb-6">
+      <label className="block text-sm font-medium text-gray-700 mb-2">
+        Property Address
+      </label>
+      <input
+        type="text"
+        
+        onChange={(e) => setPropertyAddress(e.target.value)}
+        placeholder="Enter full address of the property"
+        className="w-full border border-gray-300 rounded-md p-4 focus:ring-[#0E0EAE] focus:border-[#0E0EAE]"
+        required
+      />
+    </div>
+
+    {/* Image Uploader */}
+    <div className="mb-6">
+      <UploadDropzone
+        uploader={uploader}
+        options={options}
+        onUpdate={handleUpload}
+        width="100%"
+        height="350px"
+      />
+    </div>
+
+    {/* Thumbnails */}
+    {uploadedUrls.length > 0 && (
+      <div className="mb-6">
+        <h3 className="text-lg font-medium mb-2">Uploaded Images</h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {uploadedUrls.map((url, index) => (
+            <div key={index} className="w-full h-32 overflow-hidden rounded shadow">
+              <img
+                src={url}
+                alt={`Uploaded ${index + 1}`}
+                className="w-full h-full object-cover"
+              />
             </div>
-          )}
+          ))}
+        </div>
+      </div>
+    )}
+
+    {/* Submit Button */}
+    <div className="flex justify-center w-full">
+      <button
+        type="submit"
+        className="bg-[#0E0EAE] text-white px-8 py-5 w-full rounded hover:bg-[#0c0c9e] transition"
+      >
+        List Property
+      </button>
+    </div>
+  </form>
+)}
+
 
           {activeTab === 'settings' && (
             <div className="bg-white shadow rounded-lg p-6 space-y-6">
