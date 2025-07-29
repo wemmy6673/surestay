@@ -6,6 +6,9 @@ import { Uploader } from "uploader"; // Installed by "react-uploader".
 import { UploadButton } from "react-uploader";
 import { UploadDropzone } from "react-uploader";
 import { BsTrash3 } from "react-icons/bs";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 
 export default function LandlordDashboard({ onLogout }) {
@@ -47,14 +50,20 @@ export default function LandlordDashboard({ onLogout }) {
         setSelectedState("");
         setPropertyAddress("");
         setUploadedUrls([]);
+
+         toast.success("Property added");
       };
       const handleDeleteProperty = (indexToDelete) => {
             const updatedProperties = properties.filter((_, index) => index !== indexToDelete);
              setProperties(updatedProperties);
       };
 
+      
+
+
   return (
     <div className="min-h-screen bg-white flex relative">
+      <ToastContainer position="top-right" autoClose={3000} />
       {/* Sidebar (Mobile + Desktop) */}
       <div
         className={`fixed inset-y-0 left-0 z-50 w-64 md:w-[20%] bg-[#0E0EAE] text-white transform ${
