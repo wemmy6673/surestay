@@ -5,6 +5,7 @@ import { BsEye, BsTextRight, BsXLg } from "react-icons/bs";
 import { Uploader } from "uploader"; // Installed by "react-uploader".
 import { UploadButton } from "react-uploader";
 import { UploadDropzone } from "react-uploader";
+import { BsTrash3 } from "react-icons/bs";
 
 
 export default function LandlordDashboard({ onLogout }) {
@@ -47,6 +48,11 @@ export default function LandlordDashboard({ onLogout }) {
         setPropertyAddress("");
         setUploadedUrls([]);
       };
+      const handleDeleteProperty = (indexToDelete) => {
+            const updatedProperties = properties.filter((_, index) => index !== indexToDelete);
+             setProperties(updatedProperties);
+      };
+
   return (
     <div className="min-h-screen bg-white flex relative">
       {/* Sidebar (Mobile + Desktop) */}
@@ -253,6 +259,8 @@ export default function LandlordDashboard({ onLogout }) {
                                     {property.status}
                                   </span>
                                   <span className="text-sm font-medium text-gray-900">{property.price}</span>
+
+                                  <BsTrash3 onClick={() => handleDeleteProperty(idx)} className='cursor-pointer'/>
                                 </div>
                               </div>
                             </div>
