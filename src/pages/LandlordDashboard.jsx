@@ -12,6 +12,8 @@ export default function LandlordDashboard({ onLogout }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [properties, setProperties] = useState([])
   const [uploadedUrls, setUploadedUrls] = useState([]);
+  const [selectedState, setSelectedState] = useState("");
+  const [propertyAddress, setPropertyAddress] = useState("");
   const [houseType, setHouseType] = useState("");
   const [customDescription, setCustomDescription] = useState("");
 
@@ -25,7 +27,26 @@ export default function LandlordDashboard({ onLogout }) {
     const urls = files.map(file => file.fileUrl);
     setUploadedUrls(urls);
   };
+    const handleSubmit = (e) => {
+      e.preventDefault();
 
+    const newProperty = {
+    name: houseType === "Others" ? customDescription : houseType,
+    location: `${propertyAddress}, ${selectedState}`,
+    status: "Pending",
+    price: "₦‎ Negotiable",
+    images: uploadedUrls,
+      };
+
+        setProperties((prev) => [newProperty, ...prev]);
+
+        // Reset form
+        setHouseType("");
+        setCustomDescription("");
+        setSelectedState("");
+        setPropertyAddress("");
+        setUploadedUrls([]);
+      };
   return (
     <div className="min-h-screen bg-white flex relative">
       {/* Sidebar (Mobile + Desktop) */}
@@ -199,32 +220,49 @@ export default function LandlordDashboard({ onLogout }) {
             </div>
           )}
 
-          {activeTab === 'properties' && (
-            <div className="bg-white shadow overflow-hidden sm:rounded-md">
-              {properties.length === 0 ? (
-                <div className="px-6 py-12 text-center text-gray-500 text-lg">No properties Listed</div>
-              ) : (
-                <ul className="divide-y divide-gray-200">
-                  {properties.map((property, idx) => (
-                    <li className="px-6 py-4" key={idx}>
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="text-lg font-medium text-gray-900">{property.name}</h3>
-                          <p className="text-sm text-gray-500">{property.location}</p>
-                        </div>
-                        <div className="flex items-center space-x-4">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            {property.status}
-                          </span>
-                          <span className="text-sm font-medium text-gray-900">{property.price}</span>
-                        </div>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          )}
+            {activeTab === 'properties' && (
+                  <div className="bg-white shadow overflow-hidden sm:rounded-md">
+                    {properties.length === 0 ? (
+                      <div className="px-6 py-12 text-center text-gray-500 text-lg">No properties Listed</div>
+                    ) : (
+                      <ul className="divide-y divide-gray-200">
+                        {properties.map((property, idx) => (
+                          <li className="px-6 py-6" key={idx}>
+                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+                              
+                              {/* Images */}
+                              {property.images && property.images.length > 0 && (
+                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 w-full sm:w-1/2">
+                                  {property.images.map((url, index) => (
+                                    <img
+                                      key={index}
+                                      src={url}
+                                      alt={`Property ${index + 1}`}
+                                      className="w-full h-24 object-cover rounded shadow-sm"
+                                    />
+                                  ))}
+                                </div>
+                              )}
+
+                              {/* Property Info */}
+                              <div className="flex-1">
+                                <h3 className="text-lg font-semibold text-gray-900 mb-1">{property.name}</h3>
+                                <p className="text-sm text-gray-600 mb-2">{property.location}</p>
+                                <div className="flex items-center gap-4">
+                                  <span className="inline-block bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">
+                                    {property.status}
+                                  </span>
+                                  <span className="text-sm font-medium text-gray-900">{property.price}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+)}
+
 
           {activeTab === 'tenants' && (
             <div className="bg-white shadow overflow-hidden sm:rounded-md">
@@ -295,7 +333,7 @@ export default function LandlordDashboard({ onLogout }) {
       </label>
       <select
         className="w-full border border-gray-300 bg-white rounded-md p-4 focus:ring-[#0E0EAE] focus:border-[#0E0EAE]"
-        
+        value={selectedState}
         onChange={(e) => setSelectedState(e.target.value)}
         required
       >
@@ -319,7 +357,7 @@ export default function LandlordDashboard({ onLogout }) {
       </label>
       <input
         type="text"
-        
+        value={propertyAddress}
         onChange={(e) => setPropertyAddress(e.target.value)}
         placeholder="Enter full address of the property"
         className="w-full border border-gray-300 rounded-md p-4 focus:ring-[#0E0EAE] focus:border-[#0E0EAE]"
@@ -359,7 +397,7 @@ export default function LandlordDashboard({ onLogout }) {
     {/* Submit Button */}
     <div className="flex justify-center w-full">
       <button
-        type="submit"
+        type="submit" onClick={handleSubmit}
         className="bg-[#0E0EAE] text-white px-8 py-5 w-full rounded hover:bg-[#0c0c9e] transition"
       >
         List Property
