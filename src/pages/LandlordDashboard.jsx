@@ -57,13 +57,22 @@ export default function LandlordDashboard({ onLogout }) {
             const updatedProperties = properties.filter((_, index) => index !== indexToDelete);
              setProperties(updatedProperties);
       };
+        const isFormValid = () => {
+          const hasValidType = houseType && (houseType !== "Others" || customDescription.trim() !== "");
+          return (
+            hasValidType &&
+            selectedState &&
+            propertyAddress.trim() !== "" &&
+            uploadedUrls.length > 0
+          );
+        };
 
       
 
 
   return (
     <div className="min-h-screen bg-white flex relative">
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer position="top-right" autoClose={1000} />
       {/* Sidebar (Mobile + Desktop) */}
       <div
         className={`fixed inset-y-0 left-0 z-50 w-64 md:w-[20%] bg-[#0E0EAE] text-white transform ${
@@ -413,12 +422,19 @@ export default function LandlordDashboard({ onLogout }) {
 
     {/* Submit Button */}
     <div className="flex justify-center w-full">
-      <button
-        type="submit" onClick={handleSubmit}
-        className="bg-[#0E0EAE] text-white px-8 py-5 w-full rounded hover:bg-[#0c0c9e] transition"
-      >
-        List Property
-      </button>
+     <button
+      type="submit"
+      onClick={handleSubmit}
+      disabled={!isFormValid()}
+      className={`px-8 py-5 w-full rounded transition text-white ${
+      isFormValid()
+         ? "bg-[#0E0EAE] hover:bg-[#0c0c9e]"
+        : "bg-gray-400 cursor-not-allowed"
+        }`}
+        >
+             List Property
+        </button>
+
     </div>
   </form>
 )}
