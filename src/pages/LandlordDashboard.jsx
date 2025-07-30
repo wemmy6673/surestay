@@ -20,6 +20,9 @@ export default function LandlordDashboard({ onLogout }) {
   const [propertyAddress, setPropertyAddress] = useState("");
   const [houseType, setHouseType] = useState("");
   const [customDescription, setCustomDescription] = useState("");
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [propertyToDeleteIndex, setPropertyToDeleteIndex] = useState(null);
+
 
 
   const uploader = Uploader({
@@ -56,7 +59,17 @@ export default function LandlordDashboard({ onLogout }) {
       const handleDeleteProperty = (indexToDelete) => {
             const updatedProperties = properties.filter((_, index) => index !== indexToDelete);
              setProperties(updatedProperties);
+             
+            const confirmDelete = window.confirm("Are you sure you want to delete this property?");
+            if (confirmDelete) {
+              const updatedProperties = [...properties];
+              updatedProperties.splice(index, 1);
+              setProperties(updatedProperties);
+              toast.success("Property deleted");
+            }
       };
+
+      
         const isFormValid = () => {
           const hasValidType = houseType && (houseType !== "Others" || customDescription.trim() !== "");
           return (
@@ -66,6 +79,9 @@ export default function LandlordDashboard({ onLogout }) {
             uploadedUrls.length > 0
           );
         };
+
+        
+
 
       
 
@@ -278,7 +294,13 @@ export default function LandlordDashboard({ onLogout }) {
                                   </span>
                                   <span className="text-sm font-medium text-gray-900">{property.price}</span>
 
-                                  <BsTrash3 onClick={() => handleDeleteProperty(idx)} className='cursor-pointer'/>
+                                
+
+                                   <BsTrash3 onClick={() => {
+                                     setPropertyToDeleteIndex(idx);
+                                     setShowDeleteModal(true);
+                                   }} className='cursor-pointer'/>
+
                                 </div>
                               </div>
                             </div>
@@ -288,6 +310,35 @@ export default function LandlordDashboard({ onLogout }) {
                     )}
                   </div>
 )}
+            {showDeleteModal && (
+              <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
+                  <h2 className="text-lg font-semibold mb-4">Confirm Deletion</h2>
+                  <p className="mb-6">Are you sure you want to delete this property?</p>
+                  <div className="flex justify-end space-x-4">
+                    <button
+                      onClick={() => setShowDeleteModal(false)}
+                      className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={() => {
+                        const updatedProperties = [...properties];
+                        updatedProperties.splice(propertyToDeleteIndex, 1);
+                        setProperties(updatedProperties);
+                        setShowDeleteModal(false);
+                        setPropertyToDeleteIndex(null);
+                        toast.success("Property deleted");
+                      }}
+                      className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
 
 
           {activeTab === 'tenants' && (
