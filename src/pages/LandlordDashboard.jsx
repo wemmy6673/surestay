@@ -2,6 +2,7 @@ import { useState } from 'react'
 import previewLogo from '../images/Preview.png'
 import { FiHome, FiUsers, FiDollarSign, FiSettings, FiLogOut } from 'react-icons/fi'
 import { BsEye, BsTextRight, BsXLg } from "react-icons/bs";
+import { BsReverseLayoutTextSidebarReverse } from "react-icons/bs";
 import { Uploader } from "uploader"; // Installed by "react-uploader".
 import { UploadButton } from "react-uploader";
 import { UploadDropzone } from "react-uploader";
@@ -91,7 +92,7 @@ export default function LandlordDashboard({ onLogout }) {
       <ToastContainer position="top-right" autoClose={1000} />
       {/* Sidebar (Mobile + Desktop) */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-64 md:w-[20%] bg-[#0E0EAE] text-white transform ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 md:w-[30%] lg:w-[20%] bg-[#0E0EAE] text-white transform ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         } transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:flex`}
       >
@@ -147,7 +148,7 @@ export default function LandlordDashboard({ onLogout }) {
                   : 'text-white/80 hover:bg-white/10'
               }`}
             >
-              <FiDollarSign className="mr-3 h-5 w-5" />
+              <BsReverseLayoutTextSidebarReverse className="mr-3 h-5 w-5" />
               List Properties
             </button>
             <button
@@ -183,9 +184,9 @@ export default function LandlordDashboard({ onLogout }) {
       )}
 
       {/* Main Content */}
-      <div className="flex-1 w-full md:w-[80%]">
+      <div className="flex-1 w-full md:w-[70%] lg:w-[80%]">
         {/* Header */}
-        <header className="bg-white shadow-sm border-b flex items-center justify-between px-6 py-4 md:py-8">
+        <header className="bg-white shadow-sm border-b flex flex-row-reverse lg:flex-row items-center justify-between px-6 py-4 md:py-8">
           <button
             className="md:hidden p-2 text-gray-600"
             onClick={() => setSidebarOpen(true)}
