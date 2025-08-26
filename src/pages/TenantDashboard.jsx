@@ -8,13 +8,13 @@ export default function TenantDashboard({ onLogout }) {
   return (
     <div className="min-h-screen bg-gray-50 flex">
       {/* Sidebar */}
-      <div className="w-64 bg-[#0E0EAE] text-white">
-        <div className="p-6">
+      <div className="w-[50%] hidden md:flex md:w-[20%] bg-[#0E0EAE] text-white">
+        <div className="p-6 w-full">
           <div className="flex items-center mb-8">
-            <img src={previewLogo} alt="SureStay logo" className="w-8 h-8 mr-3" />
-            <h1 className="text-lg font-semibold">Tenant</h1>
+            
+            <h1 className="text-lg font-semibold">SureStay</h1>
           </div>
-          <nav className="space-y-2">
+          <nav className="space-y-2 w-full">
             <button
               onClick={() => setActiveTab('overview')}
               className={`w-full flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
@@ -98,9 +98,9 @@ export default function TenantDashboard({ onLogout }) {
       <div className="flex-1">
         {/* Header */}
         <header className="bg-white shadow-sm border-b">
-          <div className="px-6 py-4">
+          <div className="px-6 py-8">
             <h2 className="text-xl font-semibold text-gray-900">
-              {activeTab === 'overview' && 'Dashboard Overview'}
+              {activeTab === 'overview' && 'Dashboard'}
               {activeTab === 'search' && 'Find Your Perfect Home'}
               {activeTab === 'payments' && 'Payment History'}
               {activeTab === 'maintenance' && 'Maintenance Requests'}
