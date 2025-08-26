@@ -1,18 +1,30 @@
 import { useState } from 'react'
 import previewLogo from '../images/Preview.png'
 import { FiSearch, FiDollarSign, FiTool, FiFileText, FiSettings, FiLogOut, FiHome } from 'react-icons/fi'
+import { BsEye, BsTextRight, BsXLg } from "react-icons/bs";
+import { BsReverseLayoutTextSidebarReverse } from "react-icons/bs";
 
 export default function TenantDashboard({ onLogout }) {
   const [activeTab, setActiveTab] = useState('overview')
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
       {/* Sidebar */}
-      <div className="w-[50%] hidden md:flex md:w-[20%] bg-[#0E0EAE] text-white">
+      <div className={`fixed inset-y-0 left-0 z-50 w-64 md:w-[30%] lg:w-[20%] bg-[#0E0EAE] text-white transform ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        } transition-transform duration-300 ease-in-out md:relative md:translate-x-0 md:flex`}>
         <div className="p-6 w-full">
-          <div className="flex items-center mb-8">
+          <div className="flex items-center justify-between mb-8">
             
             <h1 className="text-lg font-semibold">SureStay</h1>
+
+            <button
+              className="md:hidden"
+              onClick={() => setSidebarOpen(false)}
+            >
+              <BsXLg className="h-5 w-5 text-white" />
+            </button>
           </div>
           <nav className="space-y-2 w-full">
             <button
@@ -94,11 +106,20 @@ export default function TenantDashboard({ onLogout }) {
         </div>
       </div>
 
+      {/* Backdrop for mobile sidebar */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+
       {/* Main Content */}
       <div className="flex-1">
         {/* Header */}
         <header className="bg-white shadow-sm border-b">
-          <div className="px-6 py-8">
+          <div className="px-6 py-8 flex justify-between items-center">
             <h2 className="text-xl font-semibold text-gray-900">
               {activeTab === 'overview' && 'Dashboard'}
               {activeTab === 'search' && 'Find Your Perfect Home'}
@@ -107,7 +128,16 @@ export default function TenantDashboard({ onLogout }) {
               {activeTab === 'lease' && 'Lease Information'}
               {activeTab === 'settings' && 'Account Settings'}
             </h2>
+
+            <button
+            className="md:hidden p-2 text-gray-600"
+            onClick={() => setSidebarOpen(true)}
+          >
+            <BsTextRight className="h-6 w-6" />
+          </button>
           </div>
+
+          
         </header>
 
         {/* Main Content */}
