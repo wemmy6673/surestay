@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import previewLogo from '../images/Preview.png'
+import {useAuth} from '../AuthContext'
 import { FiHome, FiUsers, FiDollarSign, FiSettings, FiLogOut } from 'react-icons/fi'
 import { BsEye, BsTextRight, BsXLg } from "react-icons/bs";
 import { BsReverseLayoutTextSidebarReverse } from "react-icons/bs";
@@ -13,6 +14,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 export default function LandlordDashboard({ onLogout }) {
+  const { user, logout } = useAuth();
   const [activeTab, setActiveTab] = useState('overview')
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [properties, setProperties] = useState([])
