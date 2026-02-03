@@ -44,11 +44,13 @@ function AppRoutes() {
   }
 
   return (
+
+    <AuthProvider>
     <Routes>
       <Route path="/" element={<Navigate to="/splash" replace />} />
       <Route path="/splash" element={<SplashScreen />} />
       <Route path="/terms" element={<TermsAndConditions onAgree={() => navigate('/login')} />} />
-      <AuthProvider >
+    
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
 
@@ -57,9 +59,10 @@ function AppRoutes() {
 
           {/* 404 - Redirect to dashboard */}
           <Route path="*" element={<Navigate to="/landlord-dashboard" replace />} />
-      </AuthProvider>
+
 
     </Routes>
+    </AuthProvider>
   )
 }
 

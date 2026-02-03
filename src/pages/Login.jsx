@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import previewLogo from '../images/Preview.png'
 import { FiEye, FiEyeOff } from 'react-icons/fi'
-import { login } from '../api'
+
 
 export default function Login({ onSignup, onLoginSuccess }) {
   const [showPassword, setShowPassword] = useState(false)
