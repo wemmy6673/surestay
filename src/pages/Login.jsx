@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import previewLogo from '../images/Preview.png'
 import { FiEye, FiEyeOff } from 'react-icons/fi'
+import { Link } from 'react-router-dom'
 
 
 export default function Login({ onSignup, onLoginSuccess }) {
@@ -104,12 +105,14 @@ export default function Login({ onSignup, onLoginSuccess }) {
           </Formik>
           <div className="mt-4 text-center">
             <span className="text-gray-600">Don't have an account?</span>
-            <button
-              className="ml-2 text-[#0E0EAE] font-semibold hover:underline"
-              onClick={onSignup}
-            >
-              Sign up
-            </button>
+            <Link to="/signup">
+              <button
+                className="ml-2 text-[#0E0EAE] font-semibold hover:underline"
+                onClick={onSignup}
+              >
+                Sign up
+              </button>
+            </Link>
           </div>
         </div>
       </div>

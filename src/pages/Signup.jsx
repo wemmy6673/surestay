@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import previewLogo from '../images/Preview.png'
 import { FiEye, FiEyeOff } from 'react-icons/fi'
+import { Link } from 'react-router-dom'
 
 
-export default function Signup({ onLogin, onOtp, role }) {
+export default function Signup({ onLogin }) {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -98,30 +99,7 @@ export default function Signup({ onLogin, onOtp, role }) {
                     />
                     <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1 text-left ml-1" />
                   </div>
-                  {role === 'landlord' && (
-                    <div className="flex gap-4 mb-4">
-                      <div className="w-1/2">
-                        <label htmlFor="phone" className="block text-sm font-medium mb-1">Phone Number</label>
-                        <Field
-                          type="text"
-                          name="phone"
-                          id="phone"
-                          className="w-full px-3 py-2 sm:py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                        <ErrorMessage name="phone" component="div" className="text-red-500 text-sm mt-1 text-left ml-1" />
-                      </div>
-                      <div className="w-1/2">
-                        <label htmlFor="nin" className="block text-sm font-medium mb-1">NIN</label>
-                        <Field
-                          type="text"
-                          name="nin"
-                          id="nin"
-                          className="w-full px-3 py-2 sm:py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                        <ErrorMessage name="nin" component="div" className="text-red-500 text-sm mt-1 text-left ml-1" />
-                      </div>
-                    </div>
-                  )}
+                  
                   <div className="relative mb-4">
                     <label htmlFor="password" className="absolute -top-3 left-3 px-1 text-sm font-medium z-20 -mt-1">Enter password</label>
                     <div className="relative">
@@ -175,12 +153,14 @@ export default function Signup({ onLogin, onOtp, role }) {
             </Formik>
             <div className="mt-4 text-center">
               <span className="text-gray-600">Already have an account?</span>
-              <button
-                className="ml-2 text-[#0E0EAE] font-semibold hover:underline"
-                onClick={onLogin}
-              >
-                Login
-              </button>
+              <Link to="/login">
+                <button
+                  className="ml-2 text-[#0E0EAE] font-semibold hover:underline"
+                  onClick={onLogin}
+                >
+                  Login
+                </button>
+              </Link>
             </div>
           </div>
         </div>
